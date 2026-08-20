@@ -1,6 +1,6 @@
 # secure_pinning
 
-Certificate pinning for Flutter — Android, iOS, and macOS today; Windows and Linux stubbed for a future release; Web is permanently unsupported (browsers never expose TLS certificate bytes to page JavaScript).
+Certificate pinning for Flutter. `package:http`/Dio/raw-`HttpClient` pinning works anywhere `dart:io`'s TLS stack runs — Android, iOS, macOS, Windows, and Linux. The native `SecurePinning.check()` probe API is available on Android, iOS, and macOS. Web is permanently unsupported for everything (browsers never expose TLS certificate bytes to page JavaScript).
 
 ## Why another certificate-pinning plugin?
 
@@ -15,9 +15,9 @@ Most Flutter HTTP traffic (`package:http`'s default client, Dio's default adapte
 - **Configurable connect/read timeouts**, enforced even where `dart:io` has no native read-timeout concept.
 - **A typed exception hierarchy** — `SecurePinningValidationException`, `SecurePinningTimeoutException`, `SecurePinningConfigurationException`, `SecurePinningUnsupportedPlatformException`, `SecurePinningNetworkException` — consistent across every platform and integration surface, never a raw `HandshakeException`/`PlatformException`.
 - **`package:http` and Dio integrations** ([`secure_pinning_http`](packages/secure_pinning_http), [`secure_pinning_dio`](packages/secure_pinning_dio)) as separate opt-in packages — pull in only what you use.
-- **A native probe API** (`SecurePinning.check()` + `SecurePinning.isPlatformSupported()`) for one-off/out-of-band checks, and the only path that can validate `PinningMode.legacyCaHash` (which requires walking the full certificate chain).
+- **A native probe API** (`SecurePinning.check()` + `SecurePinning.isPlatformSupported()`) for one-off/out-of-band checks, and the only path that can validate `PinningMode.legacyCaHash` (which requires walking the full certificate chain). Available on Android, iOS, and macOS.
 - **Federated plugin architecture** — the core `secure_pinning` package has zero third-party dependencies beyond `crypto`; native platform code lives in its own package per platform.
-- **Platform coverage** — Android, iOS, and macOS supported today; Windows and Linux stubbed for a future release; Web is permanently unsupported (browsers never expose TLS certificate bytes to page JavaScript).
+- **Platform coverage** — `package:http`/Dio/raw-`HttpClient` pinning works on Android, iOS, macOS, Windows, and Linux (anywhere `dart:io`'s TLS stack runs); the native probe API is Android/iOS/macOS only; Web is permanently unsupported for everything (browsers never expose TLS certificate bytes to page JavaScript).
 
 ## Packages
 
@@ -29,9 +29,12 @@ Most Flutter HTTP traffic (`package:http`'s default client, Dio's default adapte
 | [`secure_pinning_platform_interface`](packages/secure_pinning_platform_interface) | Pigeon-generated platform channel schema. |
 | [`secure_pinning_android`](packages/secure_pinning_android) | Android (Kotlin/`javax.net.ssl`) native probe engine. |
 | [`secure_pinning_apple`](packages/secure_pinning_apple) | iOS + macOS (Swift/Security.framework) native probe engine, one shared package. |
-| [`secure_pinning_windows`](packages/secure_pinning_windows) | Stub today; real implementation planned. |
-| [`secure_pinning_linux`](packages/secure_pinning_linux) | Stub today; real implementation planned. |
-| [`secure_pinning_web`](packages/secure_pinning_web) | Permanent stub — certificate pinning is not possible in a browser. |
+
+Windows, Linux, and Web don't have a `secure_pinning_*` platform package —
+`package:http`/Dio/raw-`HttpClient` pinning still works on Windows and
+Linux regardless (it's pure-Dart, not gated by a platform package at all),
+but calling the native `SecurePinning.check()` probe on those two, or on
+Web, isn't supported. See [Platform coverage](#features) above.
 
 ## Installation
 
@@ -157,10 +160,10 @@ print(result.isTrusted ? 'Trusted' : 'Rejected: ${result.errorCode}');
 
 A pin mismatch here is returned as data (`result.isTrusted == false`),
 not thrown — only genuine infrastructure failures (DNS failure,
-malformed config) throw. This is the only supported platform surface —
-check `SecurePinning.isPlatformSupported()` first if you need to know
-whether it's available (Android/iOS/macOS today; Windows/Linux stubbed;
-Web unsupported).
+malformed config) throw. Check `SecurePinning.isPlatformSupported()`
+first if you need to know whether it's available — Android, iOS, and
+macOS only; unlike `package:http`/Dio/raw-`HttpClient` pinning, this
+probe doesn't work on Windows or Linux.
 
 ### Handling failures
 

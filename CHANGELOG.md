@@ -1,3 +1,13 @@
+## 0.0.2
+
+- Drop the `secure_pinning_windows`, `secure_pinning_linux`, and
+  `secure_pinning_web` dependencies. `package:http`/Dio/raw-`HttpClient`
+  pinning is unaffected on Windows and Linux (it's pure-Dart, never gated
+  by a platform package) — only the native `SecurePinning.check()` probe,
+  which was stubbed on those two anyway, no longer has even a stub
+  registered there. Web was already permanently unsupported for
+  everything and remains so.
+
 ## 0.0.1
 
 - Initial release.
