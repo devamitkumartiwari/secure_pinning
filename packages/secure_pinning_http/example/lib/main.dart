@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:secure_pinning/secure_pinning.dart' show SecurePinningException;
 import 'package:secure_pinning_http/secure_pinning_http.dart';
 
@@ -20,9 +22,11 @@ Future<void> main() async {
 
   try {
     final response = await client.get(Uri.https('api.example.com', '/'));
-    print('HTTP ${response.statusCode} — ${response.bodyBytes.length} bytes');
+    stdout.writeln(
+      'HTTP ${response.statusCode} — ${response.bodyBytes.length} bytes',
+    );
   } on SecurePinningException catch (error) {
-    print('Pinning failed: $error');
+    stdout.writeln('Pinning failed: $error');
   } finally {
     client.close();
   }

@@ -25,9 +25,16 @@ dependencies:
   secure_pinning_platform_interface: ^1.0.0
 
 dev_dependencies:
-  flutter_lints: ^6.0.0
+  flutter_lints: '>=4.0.0 <7.0.0'
   flutter_test:
     sdk: flutter
+
+# test/fixtures/key.pem is the private key of a throwaway, locally
+# self-signed test certificate (see the openssl commands documented in
+# test/secure_pinning_engine_test.dart) — not a real secret, but pub.dev's
+# publish validator flags any PEM private key pattern regardless.
+false_secrets:
+  - /test/fixtures/key.pem
 
 # Links secure_pinning_platform_interface to the in-repo source instead of
 # pub.dev so local development doesn't require publishing it first. Remove

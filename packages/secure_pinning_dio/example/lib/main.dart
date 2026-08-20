@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:secure_pinning/secure_pinning.dart' show SecurePinningException;
 import 'package:secure_pinning_dio/secure_pinning_dio.dart';
@@ -25,11 +27,13 @@ Future<void> main() async {
 
   try {
     final response = await dio.get<String>('/');
-    print('HTTP ${response.statusCode} — ${(response.data ?? '').length} bytes');
+    stdout.writeln(
+      'HTTP ${response.statusCode} — ${(response.data ?? '').length} bytes',
+    );
   } on DioException catch (error) {
     final pinningError = error.error;
     if (pinningError is SecurePinningException) {
-      print('Pinning failed: $pinningError');
+      stdout.writeln('Pinning failed: $pinningError');
     } else {
       rethrow;
     }
