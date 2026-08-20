@@ -62,8 +62,7 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
   // key rotation on the server doesn't brick the app.
   final _hostController = TextEditingController(text: 'example.com');
   final _pinsController = TextEditingController(
-    text:
-        'j4TDkC/pQCr9UwaK2SEmFrHfDF0jbeSVXqk2yfF3D+I=\nRQeZkB42znUfsDIIFWIRiYEcksh7yeCeau1DPWKmpcM=',
+    text: 'j4TDkC/pQCr9UwaK2SEmFrHfDF0jbeSVXqk2yfF3D+I=\nRQeZkB42znUfsDIIFWIRiYEcksh7yeCeau1DPWKmpcM=',
   );
 
   // Only read/used when _mode is legacyCaHash — SecurePinningConfig
@@ -71,7 +70,8 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
   // demo works without forcing input; see PinningMode.legacyCaHash's doc
   // comment for why this friction is deliberate.
   final _acknowledgedRiskController = TextEditingController(
-    text: 'Example app — demonstrating the native probe API only, not '
+    text:
+        'Example app — demonstrating the native probe API only, not '
         'production use.',
   );
 
@@ -88,21 +88,20 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
   }
 
   SecurePinningConfig get _config => SecurePinningConfig(
-        host: _hostController.text.trim(),
-        pins: _pinsController.text
-            .split(RegExp(r'[\n,]'))
-            .map((p) => p.trim())
-            .where((p) => p.isNotEmpty)
-            .toList(),
-        mode: switch (_mode) {
-          _PinningModeOption.spki => const PinningMode.spki(),
-          _PinningModeOption.legacyLeafHash =>
-            const PinningMode.legacyLeafHash(),
-          _PinningModeOption.legacyCaHash => PinningMode.legacyCaHash(
-              acknowledgedRisk: _acknowledgedRiskController.text.trim(),
-            ),
-        },
-      );
+    host: _hostController.text.trim(),
+    pins: _pinsController.text
+        .split(RegExp(r'[\n,]'))
+        .map((p) => p.trim())
+        .where((p) => p.isNotEmpty)
+        .toList(),
+    mode: switch (_mode) {
+      _PinningModeOption.spki => const PinningMode.spki(),
+      _PinningModeOption.legacyLeafHash => const PinningMode.legacyLeafHash(),
+      _PinningModeOption.legacyCaHash => PinningMode.legacyCaHash(
+        acknowledgedRisk: _acknowledgedRiskController.text.trim(),
+      ),
+    },
+  );
 
   Future<void> _run(String label, Future<String> Function() action) async {
     setState(() => _busy = true);
@@ -120,7 +119,10 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
 
   void _append(String label, String message, {required bool isError}) {
     setState(() {
-      _log.insert(0, _LogEntry(label: label, message: message, isError: isError));
+      _log.insert(
+        0,
+        _LogEntry(label: label, message: message, isError: isError),
+      );
     });
   }
 
@@ -200,7 +202,8 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
               controller: _pinsController,
               maxLines: 3,
               decoration: const InputDecoration(
-                labelText: 'Pins (base64, one per line — first is a '
+                labelText:
+                    'Pins (base64, one per line — first is a '
                     'placeholder, replace with your host\'s real pins)',
                 border: OutlineInputBorder(),
               ),
@@ -242,11 +245,15 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
               runSpacing: 8,
               children: [
                 FilledButton(
-                  onPressed: _busy ? null : () => _run('Raw HttpClient', _runRawClient),
+                  onPressed: _busy
+                      ? null
+                      : () => _run('Raw HttpClient', _runRawClient),
                   child: const Text('Raw HttpClient'),
                 ),
                 FilledButton(
-                  onPressed: _busy ? null : () => _run('package:http', _runHttpClient),
+                  onPressed: _busy
+                      ? null
+                      : () => _run('package:http', _runHttpClient),
                   child: const Text('package:http'),
                 ),
                 FilledButton(
@@ -254,19 +261,24 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
                   child: const Text('Dio'),
                 ),
                 FilledButton.tonal(
-                  onPressed: _busy ? null : () => _run('Native probe (check())', _runCheck),
+                  onPressed: _busy
+                      ? null
+                      : () => _run('Native probe (check())', _runCheck),
                   child: const Text('Native probe (check())'),
                 ),
               ],
             ),
-            if (_busy) const Padding(
-              padding: EdgeInsets.only(top: 12),
-              child: LinearProgressIndicator(),
-            ),
+            if (_busy)
+              const Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: LinearProgressIndicator(),
+              ),
             const Divider(height: 32),
             Expanded(
               child: _log.isEmpty
-                  ? const Center(child: Text('Run a request to see results here.'))
+                  ? const Center(
+                      child: Text('Run a request to see results here.'),
+                    )
                   : ListView.separated(
                       itemCount: _log.length,
                       separatorBuilder: (_, _) => const Divider(),
@@ -274,7 +286,9 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
                         final entry = _log[index];
                         return ListTile(
                           leading: Icon(
-                            entry.isError ? Icons.error_outline : Icons.check_circle_outline,
+                            entry.isError
+                                ? Icons.error_outline
+                                : Icons.check_circle_outline,
                             color: entry.isError ? Colors.red : Colors.green,
                           ),
                           title: Text(entry.label),
@@ -291,7 +305,11 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
 }
 
 class _LogEntry {
-  _LogEntry({required this.label, required this.message, required this.isError});
+  _LogEntry({
+    required this.label,
+    required this.message,
+    required this.isError,
+  });
 
   final String label;
   final String message;

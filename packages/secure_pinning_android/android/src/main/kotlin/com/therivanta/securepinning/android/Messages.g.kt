@@ -223,8 +223,14 @@ enum class WirePinningMode(val raw: Int) {
   }
 }
 
+/** The hash algorithm a pin was computed with. */
 enum class HashAlgorithm(val raw: Int) {
+  /** SHA-256 — the recommended default. */
   SHA256(0),
+  /**
+   * SHA-1 — supported for compatibility with pins computed by older
+   * tooling; prefer [sha256] for new pin sets.
+   */
   SHA1(1);
 
   companion object {
@@ -253,19 +259,45 @@ enum class ChainPosition(val raw: Int) {
   }
 }
 
+/** Machine-readable reason a [PinningCheckResult] was not trusted. */
 enum class PinningErrorCode(val raw: Int) {
+  /**
+   * The presented certificate's SPKI hash matched none of the
+   * configured pins.
+   */
   SPKI_MISMATCH(0),
+  /**
+   * The presented certificate's whole-certificate hash matched none of
+   * the configured pins (legacy leaf-hash mode).
+   */
   LEAF_HASH_MISMATCH(1),
+  /**
+   * No certificate in the chain satisfied the configured pin set
+   * (native-probe-only chain positions).
+   */
   CHAIN_VALIDATION_FAILED(2),
+  /** The certificate's subject does not match the requested hostname. */
   HOSTNAME_MISMATCH(3),
+  /** The presented certificate has expired. */
   CERTIFICATE_EXPIRED(4),
+  /** The presented certificate is self-signed and not otherwise pinned. */
   SELF_SIGNED_CERTIFICATE(5),
+  /**
+   * The TLS connection did not establish within the configured connect
+   * timeout.
+   */
   CONNECT_TIMEOUT(6),
+  /** No response arrived within the configured read timeout. */
   READ_TIMEOUT(7),
+  /** The device has no network connectivity. */
   NO_INTERNET(8),
+  /** The TLS handshake failed for a reason other than a pin mismatch. */
   TLS_HANDSHAKE_FAILURE(9),
+  /** The current platform does not support the native probe API. */
   UNSUPPORTED_PLATFORM(10),
+  /** The supplied [PinSet] or [PinningCheckRequest] was invalid. */
   INVALID_CONFIGURATION(11),
+  /** An error occurred that doesn't map to any other [PinningErrorCode]. */
   UNKNOWN(12);
 
   companion object {
@@ -275,7 +307,12 @@ enum class PinningErrorCode(val raw: Int) {
   }
 }
 
-/** Generated class from Pigeon that represents data sent in messages. */
+/**
+ * Wire-format bundle of the pin values a [PinningCheckRequest] should be
+ * validated against, plus how to interpret and compare them.
+ *
+ * Generated class from Pigeon that represents data sent in messages.
+ */
 data class PinSet (
   /**
    * Pin values as base64 (SPKI) or hex (legacy hash) strings. At least one
@@ -283,8 +320,11 @@ data class PinSet (
    * backup pin survives a key/cert rotation.
    */
   val pins: List<String>,
+  /** How [pins] should be interpreted and compared. */
   val mode: WirePinningMode,
+  /** The hash algorithm [pins] were computed with. */
   val algorithm: HashAlgorithm,
+  /** Which certificate(s) in the chain [pins] are checked against. */
   val chainPosition: ChainPosition,
   /** Used only when [chainPosition] is [ChainPosition.specificIndex]. */
   val specificChainIndex: Long? = null
@@ -334,14 +374,29 @@ data class PinSet (
   }
 }
 
-/** Generated class from Pigeon that represents data sent in messages. */
+/**
+ * A single native probe request — see [SecurePinningHostApi.check].
+ *
+ * Generated class from Pigeon that represents data sent in messages.
+ */
 data class PinningCheckRequest (
+  /** The URL to probe. */
   val url: String,
+  /** The pins to validate the connection against. */
   val pinSet: PinSet,
+  /** Extra headers to send with the probe request, if any. */
   val headers: Map<String, String>? = null,
   /** Defaults to GET/HEAD on the native side if omitted. */
   val httpMethod: String? = null,
+  /**
+   * Maximum time to wait for the TLS connection to establish, in
+   * milliseconds.
+   */
   val connectTimeoutMs: Long,
+  /**
+   * Maximum time to wait for a response after the connection is
+   * established, in milliseconds.
+   */
   val readTimeoutMs: Long,
   /**
    * Reserved for mTLS/client-certificate authentication (planned v1.x).
@@ -401,8 +456,15 @@ data class PinningCheckRequest (
   }
 }
 
-/** Generated class from Pigeon that represents data sent in messages. */
+/**
+ * The outcome of a [SecurePinningHostApi.check] call. A pin mismatch is
+ * returned as data via [isTrusted]/[errorCode] — it is not thrown as an
+ * exception, since it's an expected, frequently-occurring result.
+ *
+ * Generated class from Pigeon that represents data sent in messages.
+ */
 data class PinningCheckResult (
+  /** Whether the connection satisfied the configured pin set. */
   val isTrusted: Boolean,
   /**
    * Non-null when [isTrusted] is false. A pin mismatch is an expected,

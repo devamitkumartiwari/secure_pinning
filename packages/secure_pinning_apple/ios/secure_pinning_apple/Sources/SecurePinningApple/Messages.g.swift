@@ -207,8 +207,12 @@ enum WirePinningMode: Int, CaseIterable {
   case legacyCaHash = 2
 }
 
+/// The hash algorithm a pin was computed with.
 enum HashAlgorithm: Int, CaseIterable {
+  /// SHA-256 — the recommended default.
   case sha256 = 0
+  /// SHA-1 — supported for compatibility with pins computed by older
+  /// tooling; prefer [sha256] for new pin sets.
   case sha1 = 1
 }
 
@@ -223,30 +227,54 @@ enum ChainPosition: Int, CaseIterable {
   case specificIndex = 2
 }
 
+/// Machine-readable reason a [PinningCheckResult] was not trusted.
 enum PinningErrorCode: Int, CaseIterable {
+  /// The presented certificate's SPKI hash matched none of the
+  /// configured pins.
   case spkiMismatch = 0
+  /// The presented certificate's whole-certificate hash matched none of
+  /// the configured pins (legacy leaf-hash mode).
   case leafHashMismatch = 1
+  /// No certificate in the chain satisfied the configured pin set
+  /// (native-probe-only chain positions).
   case chainValidationFailed = 2
+  /// The certificate's subject does not match the requested hostname.
   case hostnameMismatch = 3
+  /// The presented certificate has expired.
   case certificateExpired = 4
+  /// The presented certificate is self-signed and not otherwise pinned.
   case selfSignedCertificate = 5
+  /// The TLS connection did not establish within the configured connect
+  /// timeout.
   case connectTimeout = 6
+  /// No response arrived within the configured read timeout.
   case readTimeout = 7
+  /// The device has no network connectivity.
   case noInternet = 8
+  /// The TLS handshake failed for a reason other than a pin mismatch.
   case tlsHandshakeFailure = 9
+  /// The current platform does not support the native probe API.
   case unsupportedPlatform = 10
+  /// The supplied [PinSet] or [PinningCheckRequest] was invalid.
   case invalidConfiguration = 11
+  /// An error occurred that doesn't map to any other [PinningErrorCode].
   case unknown = 12
 }
 
+/// Wire-format bundle of the pin values a [PinningCheckRequest] should be
+/// validated against, plus how to interpret and compare them.
+///
 /// Generated class from Pigeon that represents data sent in messages.
 struct PinSet: Hashable, CustomStringConvertible {
   /// Pin values as base64 (SPKI) or hex (legacy hash) strings. At least one
   /// is required by Dart-side validation; two or more are recommended so a
   /// backup pin survives a key/cert rotation.
   var pins: [String]
+  /// How [pins] should be interpreted and compared.
   var mode: WirePinningMode
+  /// The hash algorithm [pins] were computed with.
   var algorithm: HashAlgorithm
+  /// Which certificate(s) in the chain [pins] are checked against.
   var chainPosition: ChainPosition
   /// Used only when [chainPosition] is [ChainPosition.specificIndex].
   var specificChainIndex: Int64? = nil
@@ -298,14 +326,23 @@ struct PinSet: Hashable, CustomStringConvertible {
   }
 }
 
+/// A single native probe request — see [SecurePinningHostApi.check].
+///
 /// Generated class from Pigeon that represents data sent in messages.
 struct PinningCheckRequest: Hashable, CustomStringConvertible {
+  /// The URL to probe.
   var url: String
+  /// The pins to validate the connection against.
   var pinSet: PinSet
+  /// Extra headers to send with the probe request, if any.
   var headers: [String: String]? = nil
   /// Defaults to GET/HEAD on the native side if omitted.
   var httpMethod: String? = nil
+  /// Maximum time to wait for the TLS connection to establish, in
+  /// milliseconds.
   var connectTimeoutMs: Int64
+  /// Maximum time to wait for a response after the connection is
+  /// established, in milliseconds.
   var readTimeoutMs: Int64
   /// Reserved for mTLS/client-certificate authentication (planned v1.x).
   /// Unused in v0.9 — present now so adding mTLS later is not a schema
@@ -367,8 +404,13 @@ struct PinningCheckRequest: Hashable, CustomStringConvertible {
   }
 }
 
+/// The outcome of a [SecurePinningHostApi.check] call. A pin mismatch is
+/// returned as data via [isTrusted]/[errorCode] — it is not thrown as an
+/// exception, since it's an expected, frequently-occurring result.
+///
 /// Generated class from Pigeon that represents data sent in messages.
 struct PinningCheckResult: Hashable, CustomStringConvertible {
+  /// Whether the connection satisfied the configured pin set.
   var isTrusted: Bool
   /// Non-null when [isTrusted] is false. A pin mismatch is an expected,
   /// frequently-occurring *result*, not a thrown exception — see

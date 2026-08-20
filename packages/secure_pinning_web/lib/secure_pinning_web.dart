@@ -1,3 +1,7 @@
+/// Web platform implementation of `secure_pinning`'s native probe API —
+/// permanently unsupported. See [SecurePinningWeb].
+library;
+
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:secure_pinning_platform_interface/secure_pinning_platform_interface.dart';
 
@@ -7,6 +11,13 @@ import 'package:secure_pinning_platform_interface/secure_pinning_platform_interf
 /// This is a deliberate, documented "no" (see the root README), not a
 /// "coming soon" placeholder.
 class SecurePinningWeb extends SecurePinningPlatform {
+  /// Use [registerWith] to install this implementation rather than
+  /// constructing it directly.
+  SecurePinningWeb();
+
+  /// Registers this as the active [SecurePinningPlatform] implementation.
+  /// Called automatically by Flutter's web plugin registrar — not meant
+  /// to be called directly by app code.
   static void registerWith(Registrar registrar) {
     SecurePinningPlatform.instance = SecurePinningWeb();
   }
@@ -16,7 +27,8 @@ class SecurePinningWeb extends SecurePinningPlatform {
     return PinningCheckResult(
       isTrusted: false,
       errorCode: PinningErrorCode.unsupportedPlatform,
-      errorDetail: 'Certificate pinning is not supported on Flutter Web: '
+      errorDetail:
+          'Certificate pinning is not supported on Flutter Web: '
           'browsers do not expose certificate/TLS details to page '
           'JavaScript. This is a permanent platform constraint, not a '
           'temporary gap.',

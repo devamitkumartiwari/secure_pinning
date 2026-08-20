@@ -26,7 +26,10 @@ sealed class PinningMode {
       LegacyCaHashPinningMode;
 }
 
+/// Concrete type behind [PinningMode.spki]. Construct via that factory
+/// rather than this class directly.
 final class SpkiPinningMode extends PinningMode {
+  /// Prefer [PinningMode.spki] over calling this constructor directly.
   const SpkiPinningMode();
 
   @override
@@ -36,7 +39,11 @@ final class SpkiPinningMode extends PinningMode {
   int get hashCode => (SpkiPinningMode).hashCode;
 }
 
+/// Concrete type behind [PinningMode.legacyLeafHash]. Construct via that
+/// factory rather than this class directly.
 final class LegacyLeafHashPinningMode extends PinningMode {
+  /// Prefer [PinningMode.legacyLeafHash] over calling this constructor
+  /// directly.
   const LegacyLeafHashPinningMode();
 
   @override
@@ -46,9 +53,16 @@ final class LegacyLeafHashPinningMode extends PinningMode {
   int get hashCode => (LegacyLeafHashPinningMode).hashCode;
 }
 
+/// Concrete type behind [PinningMode.legacyCaHash]. Construct via that
+/// factory rather than this class directly.
 final class LegacyCaHashPinningMode extends PinningMode {
+  /// Prefer [PinningMode.legacyCaHash] over calling this constructor
+  /// directly.
   const LegacyCaHashPinningMode({required this.acknowledgedRisk});
 
+  /// Explanation of why CA/root pinning was chosen over the safer
+  /// [PinningMode.spki]. Required, non-empty, and not interpreted — see
+  /// [PinningMode.legacyCaHash].
   final String acknowledgedRisk;
 
   @override

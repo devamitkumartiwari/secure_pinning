@@ -10,17 +10,17 @@ void main() {
       );
     });
 
-    test('throws SecurePinningConfigurationException for an empty pin list',
-        () {
-      expect(
-        () => SecurePinningConfig(host: 'example.com', pins: const []),
-        throwsA(isA<SecurePinningConfigurationException>()),
-      );
-    });
-
     test(
-        'throws SecurePinningConfigurationException for legacyCaHash with a blank justification',
-        () {
+      'throws SecurePinningConfigurationException for an empty pin list',
+      () {
+        expect(
+          () => SecurePinningConfig(host: 'example.com', pins: const []),
+          throwsA(isA<SecurePinningConfigurationException>()),
+        );
+      },
+    );
+
+    test('throws SecurePinningConfigurationException for legacyCaHash with a blank justification', () {
       expect(
         () => SecurePinningConfig(
           host: 'example.com',
@@ -36,7 +36,8 @@ void main() {
         host: 'example.com',
         pins: ['AA'],
         mode: const PinningMode.legacyCaHash(
-            acknowledgedRisk: 'migrating from a pinned internal CA'),
+          acknowledgedRisk: 'migrating from a pinned internal CA',
+        ),
       );
       expect(config.mode, isA<LegacyCaHashPinningMode>());
     });

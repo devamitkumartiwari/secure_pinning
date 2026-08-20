@@ -37,7 +37,9 @@ void main() {
       );
       expect(
         SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
+          certificateDer: certificateDer,
+          config: config,
+        ),
         isTrue,
       );
     });
@@ -53,7 +55,9 @@ void main() {
       );
       expect(
         SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
+          certificateDer: certificateDer,
+          config: config,
+        ),
         isTrue,
       );
     });
@@ -65,36 +69,46 @@ void main() {
       );
       expect(
         SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
+          certificateDer: certificateDer,
+          config: config,
+        ),
         isFalse,
       );
     });
 
-    test('matches when a backup pin is listed alongside a wrong primary pin',
-        () {
-      final config = SecurePinningConfig(
-        host: 'test.secure-pinning.example',
-        pins: ['0' * 64, _spkiSha256Hex],
-      );
-      expect(
-        SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
-        isTrue,
-      );
-    });
+    test(
+      'matches when a backup pin is listed alongside a wrong primary pin',
+      () {
+        final config = SecurePinningConfig(
+          host: 'test.secure-pinning.example',
+          pins: ['0' * 64, _spkiSha256Hex],
+        );
+        expect(
+          SecurePinningEngine.validateDer(
+            certificateDer: certificateDer,
+            config: config,
+          ),
+          isTrue,
+        );
+      },
+    );
 
-    test('does not match the whole-certificate hash (proves SPKI != leaf hash)',
-        () {
-      final config = SecurePinningConfig(
-        host: 'test.secure-pinning.example',
-        pins: [_wholeCertSha256Hex],
-      );
-      expect(
-        SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
-        isFalse,
-      );
-    });
+    test(
+      'does not match the whole-certificate hash (proves SPKI != leaf hash)',
+      () {
+        final config = SecurePinningConfig(
+          host: 'test.secure-pinning.example',
+          pins: [_wholeCertSha256Hex],
+        );
+        expect(
+          SecurePinningEngine.validateDer(
+            certificateDer: certificateDer,
+            config: config,
+          ),
+          isFalse,
+        );
+      },
+    );
   });
 
   group('SecurePinningEngine.validateDer — legacy leaf hash mode', () {
@@ -106,7 +120,9 @@ void main() {
       );
       expect(
         SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
+          certificateDer: certificateDer,
+          config: config,
+        ),
         isTrue,
       );
     });
@@ -119,7 +135,9 @@ void main() {
       );
       expect(
         SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
+          certificateDer: certificateDer,
+          config: config,
+        ),
         isFalse,
       );
     });
@@ -134,24 +152,29 @@ void main() {
       );
       expect(
         () => SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
+          certificateDer: certificateDer,
+          config: config,
+        ),
         throwsA(isA<SecurePinningConfigurationException>()),
       );
     });
 
     test(
-        'throws SecurePinningConfigurationException for non-leaf chain positions',
-        () {
-      final config = SecurePinningConfig(
-        host: 'test.secure-pinning.example',
-        pins: [_spkiSha256Hex],
-        chainPosition: ChainPosition.anyInChain,
-      );
-      expect(
-        () => SecurePinningEngine.validateDer(
-            certificateDer: certificateDer, config: config),
-        throwsA(isA<SecurePinningConfigurationException>()),
-      );
-    });
+      'throws SecurePinningConfigurationException for non-leaf chain positions',
+      () {
+        final config = SecurePinningConfig(
+          host: 'test.secure-pinning.example',
+          pins: [_spkiSha256Hex],
+          chainPosition: ChainPosition.anyInChain,
+        );
+        expect(
+          () => SecurePinningEngine.validateDer(
+            certificateDer: certificateDer,
+            config: config,
+          ),
+          throwsA(isA<SecurePinningConfigurationException>()),
+        );
+      },
+    );
   });
 }

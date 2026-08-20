@@ -41,7 +41,8 @@ class _DerTlv {
 _DerTlv _readTlv(Uint8List data, int offset) {
   if (offset + 2 > data.length) {
     throw const FormatException(
-        'Truncated DER data while reading a TLV header.');
+      'Truncated DER data while reading a TLV header.',
+    );
   }
   final tag = data[offset];
   final firstLengthByte = data[offset + 1];
@@ -57,7 +58,8 @@ _DerTlv _readTlv(Uint8List data, int offset) {
     }
     if (offset + 2 + numLengthBytes > data.length) {
       throw const FormatException(
-          'Truncated DER data while reading a long-form length.');
+        'Truncated DER data while reading a long-form length.',
+      );
     }
     contentLength = 0;
     for (var i = 0; i < numLengthBytes; i++) {
@@ -68,10 +70,14 @@ _DerTlv _readTlv(Uint8List data, int offset) {
   final contentStart = offset + 1 + lengthOfLength;
   if (contentStart + contentLength > data.length) {
     throw const FormatException(
-        'DER TLV content length exceeds the available data.');
+      'DER TLV content length exceeds the available data.',
+    );
   }
   return _DerTlv(
-      tag: tag, contentStart: contentStart, contentLength: contentLength);
+    tag: tag,
+    contentStart: contentStart,
+    contentLength: contentLength,
+  );
 }
 
 /// Returns the full DER TLV (tag + length + content) of the
@@ -83,8 +89,10 @@ _DerTlv _readTlv(Uint8List data, int offset) {
 /// certificate.
 Uint8List extractSubjectPublicKeyInfoDer(Uint8List certificateDer) {
   final certificateSequence = _readTlv(certificateDer, 0);
-  final tbsCertificate =
-      _readTlv(certificateDer, certificateSequence.contentStart);
+  final tbsCertificate = _readTlv(
+    certificateDer,
+    certificateSequence.contentStart,
+  );
 
   var offset = tbsCertificate.contentStart;
 

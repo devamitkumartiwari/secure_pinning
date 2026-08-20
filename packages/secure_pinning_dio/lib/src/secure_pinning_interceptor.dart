@@ -15,6 +15,9 @@ import 'package:secure_pinning/secure_pinning.dart';
 /// pinning failures into secure_pinning's typed exception hierarchy via
 /// [onError].
 class SecurePinningInterceptor extends Interceptor {
+  /// Installs a pinned [IOHttpClientAdapter] on [dio] immediately,
+  /// configured from [config]. Add this interceptor before making any
+  /// requests on [dio].
   SecurePinningInterceptor(
     this.dio,
     this.config, {
@@ -41,7 +44,10 @@ class SecurePinningInterceptor extends Interceptor {
     );
   }
 
+  /// The Dio instance this interceptor pins traffic on.
   final Dio dio;
+
+  /// The configuration this interceptor validates connections against.
   final SecurePinningConfig config;
 
   /// Whether a pinning-related rejection still propagates to the next
@@ -97,7 +103,8 @@ class SecurePinningInterceptor extends Interceptor {
         host: dio.options.baseUrl.isNotEmpty
             ? Uri.parse(dio.options.baseUrl).host
             : '',
-        message: 'TLS handshake failed — the presented certificate likely '
+        message:
+            'TLS handshake failed — the presented certificate likely '
             'did not match the configured pin set. ${error.message}',
       );
     }

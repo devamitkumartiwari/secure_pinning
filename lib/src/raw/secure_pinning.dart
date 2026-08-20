@@ -33,7 +33,11 @@ abstract final class SecurePinning {
       ..connectionTimeout = config.connectTimeout
       ..badCertificateCallback = (cert, host, port) {
         return SecurePinningEngine.validateCertificate(
-            cert, host, port, config);
+          cert,
+          host,
+          port,
+          config,
+        );
       };
     return client;
   }
@@ -45,7 +49,9 @@ abstract final class SecurePinning {
   /// `secure_pinning_dio`) call this around the response
   /// future/stream rather than relying on the client to self-enforce it.
   static Future<T> enforceReadTimeout<T>(
-      Future<T> future, Duration readTimeout) {
+    Future<T> future,
+    Duration readTimeout,
+  ) {
     return future.timeout(
       readTimeout,
       onTimeout: () => throw const SecurePinningTimeoutException(

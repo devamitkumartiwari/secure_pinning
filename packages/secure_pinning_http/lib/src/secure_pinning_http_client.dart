@@ -18,18 +18,22 @@ class SecurePinningHttpClient extends http.BaseClient {
   /// pinning wired in some other way and want [config]'s timeouts/typed
   /// exceptions applied around it.
   SecurePinningHttpClient(this.config, {http.BaseClient? customClient})
-      : _inner = customClient ??
-            http_io.IOClient(SecurePinning.createHttpClient(config));
+    : _inner =
+          customClient ??
+          http_io.IOClient(SecurePinning.createHttpClient(config));
 
   /// One-line convenience: pins a single host with SPKI + SHA-256 +
   /// default timeouts. Use the primary constructor with a full
   /// [SecurePinningConfig] for multi-host apps, backup-pin rotation
   /// beyond the defaults, or legacy-mode migration.
-  factory SecurePinningHttpClient.forHost(String host,
-      {required List<String> pins}) {
+  factory SecurePinningHttpClient.forHost(
+    String host, {
+    required List<String> pins,
+  }) {
     return SecurePinningHttpClient(SecurePinningConfig(host: host, pins: pins));
   }
 
+  /// The configuration this client validates connections against.
   final SecurePinningConfig config;
   final http.BaseClient _inner;
 
@@ -37,7 +41,9 @@ class SecurePinningHttpClient extends http.BaseClient {
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     try {
       return await SecurePinning.enforceReadTimeout(
-          _inner.send(request), config.readTimeout);
+        _inner.send(request),
+        config.readTimeout,
+      );
     } on SecurePinningException {
       rethrow;
     } on HandshakeException catch (error) {
@@ -49,7 +55,8 @@ class SecurePinningHttpClient extends http.BaseClient {
       throw SecurePinningValidationException(
         code: PinningErrorCode.tlsHandshakeFailure,
         host: request.url.host,
-        message: 'TLS handshake failed for ${request.url.host} — the '
+        message:
+            'TLS handshake failed for ${request.url.host} — the '
             'presented certificate likely did not match the configured '
             'pin set. ${error.message}',
       );

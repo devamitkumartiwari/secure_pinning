@@ -58,9 +58,9 @@ abstract final class SecurePinningEngine {
     final mode = config.mode;
     final String candidateHash = switch (mode) {
       SpkiPinningMode() => _hashHex(
-          extractSubjectPublicKeyInfoDer(certificateDer),
-          config.algorithm,
-        ),
+        extractSubjectPublicKeyInfoDer(certificateDer),
+        config.algorithm,
+      ),
       LegacyLeafHashPinningMode() => _hashHex(certificateDer, config.algorithm),
       LegacyCaHashPinningMode() =>
         throw const SecurePinningConfigurationException(

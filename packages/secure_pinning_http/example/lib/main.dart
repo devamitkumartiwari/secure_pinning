@@ -14,10 +14,7 @@ Future<void> main() async {
     //     | openssl enc -base64
     // Always include a backup pin so a future key rotation doesn't brick
     // the app.
-    pins: [
-      'base64-spki-hash-1',
-      'base64-spki-hash-2',
-    ],
+    pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
   );
 
   try {

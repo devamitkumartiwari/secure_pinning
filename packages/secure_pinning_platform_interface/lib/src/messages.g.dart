@@ -10,9 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
 Object? _extractReplyValueOrThrow(
-    List<Object?>? replyList,
-    String channelName, {
-    required bool isNullValid,
+  List<Object?>? replyList,
+  String channelName, {
+  required bool isNullValid,
 }) {
   if (replyList == null) {
     throw PlatformException(
@@ -46,8 +46,9 @@ bool _deepEquals(Object? a, Object? b) {
   }
   if (a is List && b is List) {
     return a.length == b.length &&
-        a.indexed
-            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+        a.indexed.every(
+          ((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]),
+        );
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) {
@@ -96,7 +97,6 @@ int _deepHash(Object? value) {
   return value.hashCode;
 }
 
-
 /// How pinned values in a [PinSet] should be interpreted and compared.
 ///
 /// This is the wire-format counterpart of the `secure_pinning` package's
@@ -114,14 +114,15 @@ int _deepHash(Object? value) {
 /// CA/root certificate, which effectively trusts *any* certificate that
 /// CA issues — a real security footgun. Dart-facing code requires an
 /// explicit `acknowledgedRisk` string to select this mode.
-enum WirePinningMode {
-  spki,
-  legacyLeafHash,
-  legacyCaHash,
-}
+enum WirePinningMode { spki, legacyLeafHash, legacyCaHash }
 
+/// The hash algorithm a pin was computed with.
 enum HashAlgorithm {
+  /// SHA-256 — the recommended default.
   sha256,
+
+  /// SHA-1 — supported for compatibility with pins computed by older
+  /// tooling; prefer [sha256] for new pin sets.
   sha1,
 }
 
@@ -130,28 +131,56 @@ enum HashAlgorithm {
 /// [leafOnly] is the default and the only option supported by
 /// secure_pinning's pure-Dart engine (`dart:io` does not expose the full
 /// chain). [anyInChain] and [specificIndex] are native-probe-only.
-enum ChainPosition {
-  leafOnly,
-  anyInChain,
-  specificIndex,
-}
+enum ChainPosition { leafOnly, anyInChain, specificIndex }
 
+/// Machine-readable reason a [PinningCheckResult] was not trusted.
 enum PinningErrorCode {
+  /// The presented certificate's SPKI hash matched none of the
+  /// configured pins.
   spkiMismatch,
+
+  /// The presented certificate's whole-certificate hash matched none of
+  /// the configured pins (legacy leaf-hash mode).
   leafHashMismatch,
+
+  /// No certificate in the chain satisfied the configured pin set
+  /// (native-probe-only chain positions).
   chainValidationFailed,
+
+  /// The certificate's subject does not match the requested hostname.
   hostnameMismatch,
+
+  /// The presented certificate has expired.
   certificateExpired,
+
+  /// The presented certificate is self-signed and not otherwise pinned.
   selfSignedCertificate,
+
+  /// The TLS connection did not establish within the configured connect
+  /// timeout.
   connectTimeout,
+
+  /// No response arrived within the configured read timeout.
   readTimeout,
+
+  /// The device has no network connectivity.
   noInternet,
+
+  /// The TLS handshake failed for a reason other than a pin mismatch.
   tlsHandshakeFailure,
+
+  /// The current platform does not support the native probe API.
   unsupportedPlatform,
+
+  /// The supplied [PinSet] or [PinningCheckRequest] was invalid.
   invalidConfiguration,
+
+  /// An error occurred that doesn't map to any other [PinningErrorCode].
   unknown,
 }
 
+/// Wire-format bundle of the pin values a [PinningCheckRequest] should be
+/// validated against, plus how to interpret and compare them.
 class PinSet {
   PinSet({
     required this.pins,
@@ -166,27 +195,25 @@ class PinSet {
   /// backup pin survives a key/cert rotation.
   List<String> pins;
 
+  /// How [pins] should be interpreted and compared.
   WirePinningMode mode;
 
+  /// The hash algorithm [pins] were computed with.
   HashAlgorithm algorithm;
 
+  /// Which certificate(s) in the chain [pins] are checked against.
   ChainPosition chainPosition;
 
   /// Used only when [chainPosition] is [ChainPosition.specificIndex].
   int? specificChainIndex;
 
   List<Object?> _toList() {
-    return <Object?>[
-      pins,
-      mode,
-      algorithm,
-      chainPosition,
-      specificChainIndex,
-    ];
+    return <Object?>[pins, mode, algorithm, chainPosition, specificChainIndex];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PinSet decode(Object result) {
     result as List<Object?>;
@@ -208,7 +235,11 @@ class PinSet {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(pins, other.pins) && _deepEquals(mode, other.mode) && _deepEquals(algorithm, other.algorithm) && _deepEquals(chainPosition, other.chainPosition) && _deepEquals(specificChainIndex, other.specificChainIndex);
+    return _deepEquals(pins, other.pins) &&
+        _deepEquals(mode, other.mode) &&
+        _deepEquals(algorithm, other.algorithm) &&
+        _deepEquals(chainPosition, other.chainPosition) &&
+        _deepEquals(specificChainIndex, other.specificChainIndex);
   }
 
   @override
@@ -221,6 +252,7 @@ class PinSet {
   }
 }
 
+/// A single native probe request — see [SecurePinningHostApi.check].
 class PinningCheckRequest {
   PinningCheckRequest({
     required this.url,
@@ -232,17 +264,24 @@ class PinningCheckRequest {
     this.clientCertificate,
   });
 
+  /// The URL to probe.
   String url;
 
+  /// The pins to validate the connection against.
   PinSet pinSet;
 
+  /// Extra headers to send with the probe request, if any.
   Map<String, String>? headers;
 
   /// Defaults to GET/HEAD on the native side if omitted.
   String? httpMethod;
 
+  /// Maximum time to wait for the TLS connection to establish, in
+  /// milliseconds.
   int connectTimeoutMs;
 
+  /// Maximum time to wait for a response after the connection is
+  /// established, in milliseconds.
   int readTimeoutMs;
 
   /// Reserved for mTLS/client-certificate authentication (planned v1.x).
@@ -263,7 +302,8 @@ class PinningCheckRequest {
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PinningCheckRequest decode(Object result) {
     result as List<Object?>;
@@ -287,7 +327,13 @@ class PinningCheckRequest {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(url, other.url) && _deepEquals(pinSet, other.pinSet) && _deepEquals(headers, other.headers) && _deepEquals(httpMethod, other.httpMethod) && _deepEquals(connectTimeoutMs, other.connectTimeoutMs) && _deepEquals(readTimeoutMs, other.readTimeoutMs) && _deepEquals(clientCertificate, other.clientCertificate);
+    return _deepEquals(url, other.url) &&
+        _deepEquals(pinSet, other.pinSet) &&
+        _deepEquals(headers, other.headers) &&
+        _deepEquals(httpMethod, other.httpMethod) &&
+        _deepEquals(connectTimeoutMs, other.connectTimeoutMs) &&
+        _deepEquals(readTimeoutMs, other.readTimeoutMs) &&
+        _deepEquals(clientCertificate, other.clientCertificate);
   }
 
   @override
@@ -300,6 +346,9 @@ class PinningCheckRequest {
   }
 }
 
+/// The outcome of a [SecurePinningHostApi.check] call. A pin mismatch is
+/// returned as data via [isTrusted]/[errorCode] — it is not thrown as an
+/// exception, since it's an expected, frequently-occurring result.
 class PinningCheckResult {
   PinningCheckResult({
     required this.isTrusted,
@@ -308,6 +357,7 @@ class PinningCheckResult {
     this.matchedPinFingerprint,
   });
 
+  /// Whether the connection satisfied the configured pin set.
   bool isTrusted;
 
   /// Non-null when [isTrusted] is false. A pin mismatch is an expected,
@@ -322,16 +372,12 @@ class PinningCheckResult {
   String? matchedPinFingerprint;
 
   List<Object?> _toList() {
-    return <Object?>[
-      isTrusted,
-      errorCode,
-      errorDetail,
-      matchedPinFingerprint,
-    ];
+    return <Object?>[isTrusted, errorCode, errorDetail, matchedPinFingerprint];
   }
 
   Object encode() {
-    return _toList();  }
+    return _toList();
+  }
 
   static PinningCheckResult decode(Object result) {
     result as List<Object?>;
@@ -352,7 +398,10 @@ class PinningCheckResult {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(isTrusted, other.isTrusted) && _deepEquals(errorCode, other.errorCode) && _deepEquals(errorDetail, other.errorDetail) && _deepEquals(matchedPinFingerprint, other.matchedPinFingerprint);
+    return _deepEquals(isTrusted, other.isTrusted) &&
+        _deepEquals(errorCode, other.errorCode) &&
+        _deepEquals(errorDetail, other.errorDetail) &&
+        _deepEquals(matchedPinFingerprint, other.matchedPinFingerprint);
   }
 
   @override
@@ -365,7 +414,6 @@ class PinningCheckResult {
   }
 }
 
-
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
   @override
@@ -373,25 +421,25 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is WirePinningMode) {
+    } else if (value is WirePinningMode) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
-    }    else if (value is HashAlgorithm) {
+    } else if (value is HashAlgorithm) {
       buffer.putUint8(130);
       writeValue(buffer, value.index);
-    }    else if (value is ChainPosition) {
+    } else if (value is ChainPosition) {
       buffer.putUint8(131);
       writeValue(buffer, value.index);
-    }    else if (value is PinningErrorCode) {
+    } else if (value is PinningErrorCode) {
       buffer.putUint8(132);
       writeValue(buffer, value.index);
-    }    else if (value is PinSet) {
+    } else if (value is PinSet) {
       buffer.putUint8(133);
       writeValue(buffer, value.encode());
-    }    else if (value is PinningCheckRequest) {
+    } else if (value is PinningCheckRequest) {
       buffer.putUint8(134);
       writeValue(buffer, value.encode());
-    }    else if (value is PinningCheckResult) {
+    } else if (value is PinningCheckResult) {
       buffer.putUint8(135);
       writeValue(buffer, value.encode());
     } else {
@@ -430,9 +478,13 @@ class SecurePinningHostApi {
   /// Constructor for [SecurePinningHostApi]. The [binaryMessenger] named argument is
   /// available for dependency injection. If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  SecurePinningHostApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
-        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+  SecurePinningHostApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  }) : pigeonVar_binaryMessenger = binaryMessenger,
+       pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty
+           ? '.$messageChannelSuffix'
+           : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -444,21 +496,23 @@ class SecurePinningHostApi {
   /// traffic; see the "Core Architectural Insight" section of the project
   /// plan for why.
   Future<PinningCheckResult> check(PinningCheckRequest request) async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.secure_pinning_platform_interface.SecurePinningHostApi.check$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.secure_pinning_platform_interface.SecurePinningHostApi.check$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
       binaryMessenger: pigeonVar_binaryMessenger,
     );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[request]);
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
+      <Object?>[request],
+    );
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as PinningCheckResult;
   }
 
@@ -466,7 +520,8 @@ class SecurePinningHostApi {
   /// Windows/Linux (stubbed) and Web (permanently unsupported). Never
   /// throws.
   Future<bool> isPlatformSupported() async {
-    final pigeonVar_channelName = 'dev.flutter.pigeon.secure_pinning_platform_interface.SecurePinningHostApi.isPlatformSupported$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.secure_pinning_platform_interface.SecurePinningHostApi.isPlatformSupported$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -476,11 +531,10 @@ class SecurePinningHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: false,
-    )
-    ;
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
     return pigeonVar_replyValue! as bool;
   }
 }
