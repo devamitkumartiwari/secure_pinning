@@ -12,7 +12,7 @@ import 'package:secure_pinning_http/secure_pinning_http.dart';
 
 final client = SecurePinningHttpClient.forHost(
   'api.example.com',
-  pins: ['base64-spki-hash-1', 'base64-spki-hash-2'], // include a backup pin
+  pins: ['hex-spki-hash-1', 'hex-spki-hash-2'], // include a backup pin
 );
 final response = await client.get(Uri.https('api.example.com', '/'));
 ```
@@ -31,7 +31,7 @@ import 'package:secure_pinning_http/secure_pinning_http.dart';
 final client = SecurePinningHttpClient(
   SecurePinningConfig(
     host: 'api.example.com',
-    pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
+    pins: ['hex-spki-hash-1', 'hex-spki-hash-2'],
   ),
 );
 ```

@@ -10,11 +10,11 @@ Future<void> main() async {
     //   openssl s_client -connect HOST:443 -servername HOST < /dev/null 2>/dev/null \
     //     | openssl x509 -pubkey -noout \
     //     | openssl pkey -pubin -outform der \
-    //     | openssl dgst -sha256 -binary \
-    //     | openssl enc -base64
+    //     | openssl dgst -sha256 -hex \
+    //     | awk '{print $NF}'
     // Always include a backup pin so a future key rotation doesn't brick
     // the app.
-    pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
+    pins: ['hex-spki-hash-1', 'hex-spki-hash-2'],
   );
 
   try {

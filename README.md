@@ -51,14 +51,15 @@ you're using the raw client or the native probe API directly.
 ## Getting your pins
 
 Every usage example below needs at least one SPKI pin for the host you're
-pinning. Compute it with:
+pinning, as a **hex string** (colon-tolerant, case-insensitive — not
+base64). Compute it with:
 
 ```sh
 openssl s_client -connect HOST:443 -servername HOST < /dev/null 2>/dev/null \
   | openssl x509 -pubkey -noout \
   | openssl pkey -pubin -outform der \
-  | openssl dgst -sha256 -binary \
-  | openssl enc -base64
+  | openssl dgst -sha256 -hex \
+  | awk '{print $NF}'
 ```
 
 Always include a **second, backup pin** (e.g. the SPKI hash of the
@@ -78,7 +79,7 @@ import 'package:secure_pinning_http/secure_pinning_http.dart';
 
 final client = SecurePinningHttpClient.forHost(
   'api.example.com',
-  pins: ['base64-spki-hash-1', 'base64-spki-hash-2'], // include a backup pin
+  pins: ['hex-spki-hash-1', 'hex-spki-hash-2'], // include a backup pin
 );
 final response = await client.get(Uri.https('api.example.com', '/'));
 ```
@@ -98,7 +99,7 @@ dio.interceptors.add(
   SecurePinningInterceptor.forHost(
     dio,
     'api.example.com',
-    pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
+    pins: ['hex-spki-hash-1', 'hex-spki-hash-2'],
   ),
 );
 
@@ -118,7 +119,7 @@ import 'package:secure_pinning/secure_pinning.dart';
 
 final config = SecurePinningConfig(
   host: 'api.example.com',
-  pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
+  pins: ['hex-spki-hash-1', 'hex-spki-hash-2'],
 );
 final client = SecurePinning.createHttpClient(config);
 
@@ -148,7 +149,7 @@ final result = await SecurePinning.check(
   url: 'https://api.example.com',
   config: SecurePinningConfig(
     host: 'api.example.com',
-    pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
+    pins: ['hex-spki-hash-1', 'hex-spki-hash-2'],
   ),
 );
 print(result.isTrusted ? 'Trusted' : 'Rejected: ${result.errorCode}');

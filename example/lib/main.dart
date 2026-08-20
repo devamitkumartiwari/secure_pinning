@@ -49,20 +49,23 @@ class PinningDemoPage extends StatefulWidget {
 }
 
 class _PinningDemoPageState extends State<PinningDemoPage> {
-  // These SPKI pins are placeholders. Replace them with your own host's
-  // pins before running against a real backend — compute them with:
+  // These SPKI pins are placeholders (hex, not base64 — SecurePinningConfig
+  // expects hex). Replace them with your own host's pins before running
+  // against a real backend — compute them with:
   //
   //   openssl s_client -connect HOST:443 -servername HOST < /dev/null 2>/dev/null \
   //     | openssl x509 -pubkey -noout \
   //     | openssl pkey -pubin -outform der \
-  //     | openssl dgst -sha256 -binary \
-  //     | openssl enc -base64
+  //     | openssl dgst -sha256 -hex \
+  //     | awk '{print $NF}'
   //
   // Always list a backup pin (e.g. a leaf-adjacent CA's SPKI) so a future
   // key rotation on the server doesn't brick the app.
   final _hostController = TextEditingController(text: 'example.com');
   final _pinsController = TextEditingController(
-    text: 'j4TDkC/pQCr9UwaK2SEmFrHfDF0jbeSVXqk2yfF3D+I=\nRQeZkB42znUfsDIIFWIRiYEcksh7yeCeau1DPWKmpcM=',
+    text:
+        '0000000000000000000000000000000000000000000000000000000000000000\n'
+        '1111111111111111111111111111111111111111111111111111111111111111',
   );
 
   // Only read/used when _mode is legacyCaHash — SecurePinningConfig
@@ -203,8 +206,8 @@ class _PinningDemoPageState extends State<PinningDemoPage> {
               maxLines: 3,
               decoration: const InputDecoration(
                 labelText:
-                    'Pins (base64, one per line — first is a '
-                    'placeholder, replace with your host\'s real pins)',
+                    'Pins (hex, one per line — placeholders, replace '
+                    'with your host\'s real pins)',
                 border: OutlineInputBorder(),
               ),
             ),

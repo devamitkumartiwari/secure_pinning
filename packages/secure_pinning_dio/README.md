@@ -17,7 +17,7 @@ dio.interceptors.add(
   SecurePinningInterceptor.forHost(
     dio,
     'api.example.com',
-    pins: ['base64-spki-hash-1', 'base64-spki-hash-2'], // include a backup pin
+    pins: ['hex-spki-hash-1', 'hex-spki-hash-2'], // include a backup pin
   ),
 );
 
@@ -38,7 +38,7 @@ dio.interceptors.add(
     dio,
     SecurePinningConfig(
       host: 'api.example.com',
-      pins: ['base64-spki-hash-1', 'base64-spki-hash-2'],
+      pins: ['hex-spki-hash-1', 'hex-spki-hash-2'],
     ),
   ),
 );
