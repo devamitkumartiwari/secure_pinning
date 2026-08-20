@@ -8,12 +8,16 @@ environment:
   sdk: '>=3.13.0 <4.0.0'
 
 dependencies:
-  secure_pinning: ^0.0.1
+  secure_pinning: ^0.0.2
   secure_pinning_http:
     path: ../
 
 dependency_overrides:
   secure_pinning:
     path: ../../../
+  secure_pinning_android:
+    path: ../../secure_pinning_android
+  secure_pinning_apple:
+    path: ../../secure_pinning_apple
   secure_pinning_platform_interface:
     path: ../../secure_pinning_platform_interface

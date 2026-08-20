@@ -1,3 +1,8 @@
+## 0.0.2
+
+- No functional changes — bumps the `secure_pinning` dependency
+  constraint to `^0.0.2` to match that package's current release.
+
 ## 0.0.1
 
 - Initial release.

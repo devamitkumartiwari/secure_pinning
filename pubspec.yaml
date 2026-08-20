@@ -24,7 +24,7 @@ dependencies:
     sdk: flutter
   secure_pinning_android: ^0.0.2
   secure_pinning_apple: ^0.0.2
-  secure_pinning_platform_interface: ^0.0.1
+  secure_pinning_platform_interface: ^0.0.2
 
 dev_dependencies:
   flutter_lints: '>=4.0.0 <7.0.0'
@@ -48,3 +48,5 @@ dependency_overrides:
     path: packages/secure_pinning_android
   secure_pinning_apple:
     path: packages/secure_pinning_apple
+  secure_pinning_platform_interface:
+    path: packages/secure_pinning_platform_interface

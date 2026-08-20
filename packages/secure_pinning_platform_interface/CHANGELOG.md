@@ -1,3 +1,8 @@
+## 0.0.2
+
+- No functional changes — version bump to stay in lockstep with the
+  other packages' `0.0.2` release.
+
 ## 0.0.1
 
 - Initial release.
