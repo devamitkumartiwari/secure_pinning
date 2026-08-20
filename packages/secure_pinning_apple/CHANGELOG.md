@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.0.1
 
 - Initial release.
 - iOS and macOS (Swift/Security.framework) implementation of

@@ -2,7 +2,7 @@ name: secure_pinning_apple
 description: >
   iOS and macOS native probe-engine implementation for secure_pinning, in
   one shared package built on Security.framework.
-version: 1.0.0
+version: 0.0.1
 homepage: https://github.com/devamitkumartiwari/secure_pinning
 repository: https://github.com/devamitkumartiwari/secure_pinning
 issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
@@ -27,7 +27,7 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  secure_pinning_platform_interface: ^1.0.0
+  secure_pinning_platform_interface: ^0.0.1
 
 dev_dependencies:
   flutter_lints: '>=4.0.0 <7.0.0'

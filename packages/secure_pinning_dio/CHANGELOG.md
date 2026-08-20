@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.0.1
 
 - Initial release.
 - `SecurePinningInterceptor`, an `Interceptor`-shaped facade that

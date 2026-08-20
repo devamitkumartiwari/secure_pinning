@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.0.1
 
 - Initial release.
 - `SecurePinningHttpClient`, a pinned `http.BaseClient` with full verb and

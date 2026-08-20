@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.0.1
 
 - Initial release.
 - `SecurePinning.createHttpClient()`, `secure_pinning_http`, and

@@ -3,7 +3,7 @@ description: >
   Certificate pinning for Flutter with SPKI pinning by default, a
   pure-Dart validation engine, and typed exceptions across every
   platform.
-version: 1.0.0
+version: 0.0.1
 homepage: https://github.com/devamitkumartiwari/secure_pinning
 repository: https://github.com/devamitkumartiwari/secure_pinning
 issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
@@ -22,7 +22,7 @@ dependencies:
   crypto: ^3.0.7
   flutter:
     sdk: flutter
-  secure_pinning_platform_interface: ^1.0.0
+  secure_pinning_platform_interface: ^0.0.1
 
 dev_dependencies:
   flutter_lints: '>=4.0.0 <7.0.0'

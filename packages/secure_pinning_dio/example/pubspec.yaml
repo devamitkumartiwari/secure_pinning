@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   dio: ^5.11.0
-  secure_pinning: ^1.0.0
+  secure_pinning: ^0.0.1
   secure_pinning_dio:
     path: ../
 

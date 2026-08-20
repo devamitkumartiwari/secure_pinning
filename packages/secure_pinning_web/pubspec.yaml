@@ -2,7 +2,7 @@ name: secure_pinning_web
 description: >
   Web implementation of secure_pinning. Certificate pinning is not
   possible in a browser, so this reports a clear unsupported result.
-version: 1.0.0
+version: 0.0.1
 homepage: https://github.com/devamitkumartiwari/secure_pinning
 repository: https://github.com/devamitkumartiwari/secure_pinning
 issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
@@ -28,7 +28,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  secure_pinning_platform_interface: ^1.0.0
+  secure_pinning_platform_interface: ^0.0.1
 
 dev_dependencies:
   flutter_lints: '>=4.0.0 <7.0.0'

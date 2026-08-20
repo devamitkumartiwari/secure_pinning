@@ -3,7 +3,7 @@ description: >
   package:http integration for secure_pinning — a BaseClient wrapper with
   full verb + streaming support, built on secure_pinning's pure-Dart
   pinning engine.
-version: 1.0.0
+version: 0.0.1
 homepage: https://github.com/devamitkumartiwari/secure_pinning
 repository: https://github.com/devamitkumartiwari/secure_pinning
 issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
@@ -21,7 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: '>=1.1.0 <2.0.0'
-  secure_pinning: ^1.0.0
+  secure_pinning: ^0.0.1
 
 dev_dependencies:
   flutter_lints: '>=4.0.0 <7.0.0'

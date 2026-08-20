@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.0.1
 
 - Initial release.
 - Pigeon-generated platform channel schema (`PinningCheckRequest`,

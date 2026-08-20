@@ -2,7 +2,7 @@ name: secure_pinning_dio
 description: >
   Dio integration for secure_pinning — an Interceptor-shaped facade for
   pinned TLS validation on Dio traffic.
-version: 1.0.0
+version: 0.0.1
 homepage: https://github.com/devamitkumartiwari/secure_pinning
 repository: https://github.com/devamitkumartiwari/secure_pinning
 issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
@@ -20,7 +20,7 @@ dependencies:
   dio: ^5.11.0
   flutter:
     sdk: flutter
-  secure_pinning: ^1.0.0
+  secure_pinning: ^0.0.1
 
 dev_dependencies:
   flutter_lints: '>=4.0.0 <7.0.0'

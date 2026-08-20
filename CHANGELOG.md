@@ -1,4 +1,4 @@
-## 1.0.0
+## 0.0.1
 
 - Initial release.
 - Three pinning modes: `PinningMode.spki` (public-key hash, the default),
