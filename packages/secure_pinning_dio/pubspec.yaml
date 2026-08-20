@@ -17,7 +17,7 @@ environment:
   flutter: '>=3.29.0'
 
 dependencies:
-  dio: ^5.11.0
+  dio: '>=5.2.0 <6.0.0'
   flutter:
     sdk: flutter
   secure_pinning: ^0.0.1

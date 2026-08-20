@@ -19,7 +19,7 @@ environment:
   flutter: '>=3.29.0'
 
 dependencies:
-  crypto: ^3.0.7
+  crypto: '>=3.0.0 <4.0.0'
   flutter:
     sdk: flutter
   secure_pinning_platform_interface: ^0.0.1
