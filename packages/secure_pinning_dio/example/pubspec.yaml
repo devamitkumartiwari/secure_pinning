@@ -1,0 +1,20 @@
+name: secure_pinning_dio_example
+description: >
+  Minimal usage example for secure_pinning_dio.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+
+dependencies:
+  dio: ^5.11.0
+  secure_pinning: ^1.0.0
+  secure_pinning_dio:
+    path: ../
+
+dependency_overrides:
+  secure_pinning:
+    path: ../../../
+  secure_pinning_platform_interface:
+    path: ../../secure_pinning_platform_interface
