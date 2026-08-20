@@ -1,12 +1,11 @@
 name: secure_pinning_platform_interface
 description: >
-  Common platform interface and Pigeon-generated platform channel schema for
-  the secure_pinning certificate-pinning plugin. Not meant for direct use by
-  applications — depend on the secure_pinning package instead.
+  Common platform interface and Pigeon-generated platform channel schema
+  for the secure_pinning certificate-pinning plugin.
 version: 1.0.0
-homepage: https://github.com/therivanta/secure_pinning
-repository: https://github.com/therivanta/secure_pinning
-issue_tracker: https://github.com/therivanta/secure_pinning/issues
+homepage: https://github.com/devamitkumartiwari/secure_pinning
+repository: https://github.com/devamitkumartiwari/secure_pinning
+issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
 topics:
   - security
   - networking

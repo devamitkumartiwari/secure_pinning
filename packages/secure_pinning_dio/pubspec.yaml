@@ -1,12 +1,11 @@
 name: secure_pinning_dio
 description: >
-  Dio integration for secure_pinning — an Interceptor-shaped facade that
-  configures Dio's IOHttpClientAdapter for pinned TLS validation, built on
-  secure_pinning's pure-Dart pinning engine.
+  Dio integration for secure_pinning — an Interceptor-shaped facade for
+  pinned TLS validation on Dio traffic.
 version: 1.0.0
-homepage: https://github.com/therivanta/secure_pinning
-repository: https://github.com/therivanta/secure_pinning
-issue_tracker: https://github.com/therivanta/secure_pinning/issues
+homepage: https://github.com/devamitkumartiwari/secure_pinning
+repository: https://github.com/devamitkumartiwari/secure_pinning
+issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
 topics:
   - security
   - networking

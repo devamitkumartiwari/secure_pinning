@@ -1,13 +1,12 @@
 name: secure_pinning
 description: >
-  Certificate pinning for Flutter with zero third-party dependencies:
-  SPKI (public key) pinning by default, a pure-Dart engine that validates
-  the real connection your app uses (no preflight round-trip), and a
-  typed exception hierarchy consistent across every platform.
+  Certificate pinning for Flutter with SPKI pinning by default, a
+  pure-Dart validation engine, and typed exceptions across every
+  platform.
 version: 1.0.0
-homepage: https://github.com/therivanta/secure_pinning
-repository: https://github.com/therivanta/secure_pinning
-issue_tracker: https://github.com/therivanta/secure_pinning/issues
+homepage: https://github.com/devamitkumartiwari/secure_pinning
+repository: https://github.com/devamitkumartiwari/secure_pinning
+issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
 topics:
   - security
   - networking

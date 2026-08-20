@@ -1,15 +1,12 @@
 name: secure_pinning_windows
 description: >
-  Windows implementation of secure_pinning. The native SecurePinning.check()
-  probe API is stubbed on this platform for now (real implementation via
-  Schannel/CNG is planned for v1.x) — SecurePinning.createHttpClient(),
-  secure_pinning_http, and secure_pinning_dio already work today, since
-  they run on the pure-Dart engine, not this native probe. Not meant for
-  direct use by applications.
+  Windows implementation of secure_pinning. Pure-Dart-engine paths work
+  today; the native check() probe is stubbed pending a Schannel/CNG
+  implementation.
 version: 1.0.0
-homepage: https://github.com/therivanta/secure_pinning
-repository: https://github.com/therivanta/secure_pinning
-issue_tracker: https://github.com/therivanta/secure_pinning/issues
+homepage: https://github.com/devamitkumartiwari/secure_pinning
+repository: https://github.com/devamitkumartiwari/secure_pinning
+issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
 topics:
   - security
   - networking

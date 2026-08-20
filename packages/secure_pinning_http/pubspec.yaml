@@ -4,9 +4,9 @@ description: >
   full verb + streaming support, built on secure_pinning's pure-Dart
   pinning engine.
 version: 1.0.0
-homepage: https://github.com/therivanta/secure_pinning
-repository: https://github.com/therivanta/secure_pinning
-issue_tracker: https://github.com/therivanta/secure_pinning/issues
+homepage: https://github.com/devamitkumartiwari/secure_pinning
+repository: https://github.com/devamitkumartiwari/secure_pinning
+issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues
 topics:
   - security
   - networking
