@@ -1,0 +1,43 @@
+name: secure_pinning_web
+description: >
+  Web implementation of secure_pinning. Certificate pinning is not possible
+  in a browser (JavaScript is never given access to TLS certificate
+  bytes) — this package exists only to give secure_pinning's web target a
+  well-defined, clearly-labeled "unsupported" result instead of a missing
+  platform implementation. Not meant for direct use by applications.
+version: 1.0.0
+homepage: https://github.com/therivanta/secure_pinning
+repository: https://github.com/therivanta/secure_pinning
+issue_tracker: https://github.com/therivanta/secure_pinning/issues
+topics:
+  - security
+  - networking
+  - certificate-pinning
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+flutter:
+  plugin:
+    implements: secure_pinning
+    platforms:
+      web:
+        pluginClass: SecurePinningWeb
+        fileName: secure_pinning_web.dart
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  secure_pinning_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  secure_pinning_platform_interface:
+    path: ../secure_pinning_platform_interface

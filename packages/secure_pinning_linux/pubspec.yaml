@@ -1,0 +1,41 @@
+name: secure_pinning_linux
+description: >
+  Linux implementation of secure_pinning. The native SecurePinning.check()
+  probe API is stubbed on this platform for now (real implementation via
+  OpenSSL is planned for v1.x) — SecurePinning.createHttpClient(),
+  secure_pinning_http, and secure_pinning_dio already work today, since
+  they run on the pure-Dart engine, not this native probe. Not meant for
+  direct use by applications.
+version: 1.0.0
+homepage: https://github.com/therivanta/secure_pinning
+repository: https://github.com/therivanta/secure_pinning
+issue_tracker: https://github.com/therivanta/secure_pinning/issues
+topics:
+  - security
+  - networking
+  - certificate-pinning
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+flutter:
+  plugin:
+    implements: secure_pinning
+    platforms:
+      linux:
+        dartPluginClass: SecurePinningLinux
+
+dependencies:
+  flutter:
+    sdk: flutter
+  secure_pinning_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  secure_pinning_platform_interface:
+    path: ../secure_pinning_platform_interface

@@ -1,0 +1,39 @@
+name: secure_pinning_android
+description: >
+  Android native probe-engine implementation for secure_pinning. Not meant
+  for direct use by applications — depend on the secure_pinning package
+  instead.
+version: 1.0.0
+homepage: https://github.com/therivanta/secure_pinning
+repository: https://github.com/therivanta/secure_pinning
+issue_tracker: https://github.com/therivanta/secure_pinning/issues
+topics:
+  - security
+  - networking
+  - certificate-pinning
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+flutter:
+  plugin:
+    implements: secure_pinning
+    platforms:
+      android:
+        package: com.therivanta.securepinning.android
+        pluginClass: SecurePinningPlugin
+
+dependencies:
+  flutter:
+    sdk: flutter
+  secure_pinning_platform_interface: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  secure_pinning_platform_interface:
+    path: ../secure_pinning_platform_interface

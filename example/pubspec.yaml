@@ -1,0 +1,39 @@
+name: secure_pinning_example
+description: >
+  Runnable demo of secure_pinning covering the raw HttpClient factory,
+  the package:http integration, and the Dio integration.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+dependencies:
+  dio: ^5.11.0
+  flutter:
+    sdk: flutter
+  http: '>=1.1.0 <2.0.0'
+  secure_pinning:
+    path: ../
+  secure_pinning_dio:
+    path: ../packages/secure_pinning_dio
+  secure_pinning_http:
+    path: ../packages/secure_pinning_http
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+# secure_pinning_http/secure_pinning_dio depend on the hosted secure_pinning;
+# override them to the local path so this example always exercises the
+# in-repo source rather than the last published version.
+dependency_overrides:
+  secure_pinning:
+    path: ../
+  secure_pinning_platform_interface:
+    path: ../packages/secure_pinning_platform_interface
+
+flutter:
+  uses-material-design: true

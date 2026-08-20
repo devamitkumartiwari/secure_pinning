@@ -1,0 +1,35 @@
+name: secure_pinning_http
+description: >
+  package:http integration for secure_pinning — a BaseClient wrapper with
+  full verb + streaming support, built on secure_pinning's pure-Dart
+  pinning engine.
+version: 1.0.0
+homepage: https://github.com/therivanta/secure_pinning
+repository: https://github.com/therivanta/secure_pinning
+issue_tracker: https://github.com/therivanta/secure_pinning/issues
+topics:
+  - security
+  - networking
+  - certificate-pinning
+  - http
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: '>=1.1.0 <2.0.0'
+  secure_pinning: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  secure_pinning:
+    path: ../..
+  secure_pinning_platform_interface:
+    path: ../secure_pinning_platform_interface

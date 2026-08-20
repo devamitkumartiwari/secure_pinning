@@ -1,0 +1,32 @@
+# Dart/Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+pubspec.lock
+
+# IDE
+*.iml
+.idea/
+
+# Claude Code — personal, per-developer permission grants; not shared config
+.claude/settings.local.json
+
+# Platform build artifacts
+android/.gradle/
+android/local.properties
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+macos/Pods/
+macos/Flutter/ephemeral/
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# OS
+.DS_Store

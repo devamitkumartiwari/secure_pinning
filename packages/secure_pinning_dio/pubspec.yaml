@@ -1,0 +1,35 @@
+name: secure_pinning_dio
+description: >
+  Dio integration for secure_pinning — an Interceptor-shaped facade that
+  configures Dio's IOHttpClientAdapter for pinned TLS validation, built on
+  secure_pinning's pure-Dart pinning engine.
+version: 1.0.0
+homepage: https://github.com/therivanta/secure_pinning
+repository: https://github.com/therivanta/secure_pinning
+issue_tracker: https://github.com/therivanta/secure_pinning/issues
+topics:
+  - security
+  - networking
+  - certificate-pinning
+  - dio
+
+environment:
+  sdk: '>=3.13.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+dependencies:
+  dio: ^5.11.0
+  flutter:
+    sdk: flutter
+  secure_pinning: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+dependency_overrides:
+  secure_pinning:
+    path: ../..
+  secure_pinning_platform_interface:
+    path: ../secure_pinning_platform_interface
