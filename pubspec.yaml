@@ -35,11 +35,3 @@ dev_dependencies:
 # publish validator flags any PEM private key pattern regardless.
 false_secrets:
   - /test/fixtures/key.pem
-
-# Links secure_pinning_platform_interface to the in-repo source instead of
-# pub.dev so local development doesn't require publishing it first. Remove
-# this block before `dart pub publish` — it's a local-dev-only override and
-# pub will warn that it's ignored when published.
-dependency_overrides:
-  secure_pinning_platform_interface:
-    path: packages/secure_pinning_platform_interface
