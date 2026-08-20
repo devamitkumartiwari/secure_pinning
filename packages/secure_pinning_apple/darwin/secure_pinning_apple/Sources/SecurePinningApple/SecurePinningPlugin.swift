@@ -6,13 +6,14 @@ import CryptoKit
   import Flutter
 #elseif os(macOS)
   import FlutterMacOS
-
-  // FlutterMacOS's FlutterError doesn't conform to Swift's Error the way
-  // Flutter (iOS)'s does — needed here to use it with Result<T, Error>/throw.
-  extension FlutterError: Error {}
 #else
   #error("Unsupported platform.")
 #endif
+
+// Neither Flutter (iOS) nor FlutterMacOS's FlutterError conforms to
+// Swift's Error on their own — needed here to use it with
+// Result<T, Error>/throw.
+extension FlutterError: Error {}
 
 /// iOS/macOS implementation of `SecurePinningHostApi` — the native probe
 /// behind `SecurePinning.check()`/`SecurePinning.isPlatformSupported()`.
