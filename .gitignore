@@ -15,16 +15,22 @@ pubspec.lock
 .claude/settings.local.json
 
 # Platform build artifacts
-android/.gradle/
-android/local.properties
-ios/Pods/
-ios/.symlinks/
-ios/Flutter/Flutter.framework
-ios/Flutter/Flutter.podspec
-macos/Pods/
-macos/Flutter/ephemeral/
-windows/flutter/ephemeral/
-linux/flutter/ephemeral/
+# `**/` prefix required: a bare `android/.gradle/` is anchored to the repo
+# root by git's gitignore rules (any pattern with a slash in the middle is
+# root-relative), so it silently misses this same path one level down
+# inside packages/*/android/ — `**/` matches at any depth instead.
+**/android/.gradle/
+**/android/local.properties
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/macos/Pods/
+**/macos/Flutter/ephemeral/
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
+**/darwin/**/.build/
+**/darwin/**/.swiftpm/
 .flutter-plugins
 .flutter-plugins-dependencies
 

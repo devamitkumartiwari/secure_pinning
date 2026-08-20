@@ -27,7 +27,7 @@ Most Flutter HTTP traffic (`package:http`'s default client, Dio's default adapte
 | [`secure_pinning_http`](packages/secure_pinning_http) | `package:http`-compatible `BaseClient` wrapper. |
 | [`secure_pinning_dio`](packages/secure_pinning_dio) | Dio interceptor-shaped integration. |
 | [`secure_pinning_platform_interface`](packages/secure_pinning_platform_interface) | Pigeon-generated platform channel schema. |
-| [`secure_pinning_android`](packages/secure_pinning_android) | Android (Kotlin/OkHttp) native probe engine. |
+| [`secure_pinning_android`](packages/secure_pinning_android) | Android (Kotlin/`javax.net.ssl`) native probe engine. |
 | [`secure_pinning_apple`](packages/secure_pinning_apple) | iOS + macOS (Swift/Security.framework) native probe engine, one shared package. |
 | [`secure_pinning_windows`](packages/secure_pinning_windows) | Stub today; real implementation planned. |
 | [`secure_pinning_linux`](packages/secure_pinning_linux) | Stub today; real implementation planned. |

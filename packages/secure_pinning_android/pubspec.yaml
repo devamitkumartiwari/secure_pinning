@@ -3,7 +3,7 @@ description: >
   Android native probe-engine implementation for secure_pinning. Not meant
   for direct use by applications — depend on the secure_pinning package
   instead.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/devamitkumartiwari/secure_pinning
 repository: https://github.com/devamitkumartiwari/secure_pinning
 issue_tracker: https://github.com/devamitkumartiwari/secure_pinning/issues

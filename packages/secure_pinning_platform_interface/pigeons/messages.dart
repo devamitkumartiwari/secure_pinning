@@ -15,7 +15,7 @@ import 'package:pigeon/pigeon.dart';
     kotlinOptions: KotlinOptions(
       package: 'com.therivanta.securepinning.android',
     ),
-    swiftOut: '../secure_pinning_apple/ios/secure_pinning_apple/Sources/SecurePinningApple/Messages.g.swift',
+    swiftOut: '../secure_pinning_apple/darwin/secure_pinning_apple/Sources/SecurePinningApple/Messages.g.swift',
     dartPackageName: 'secure_pinning_platform_interface',
   ),
 )

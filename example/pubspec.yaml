@@ -32,8 +32,18 @@ dev_dependencies:
 dependency_overrides:
   secure_pinning:
     path: ../
+  secure_pinning_android:
+    path: ../packages/secure_pinning_android
+  secure_pinning_apple:
+    path: ../packages/secure_pinning_apple
+  secure_pinning_linux:
+    path: ../packages/secure_pinning_linux
   secure_pinning_platform_interface:
     path: ../packages/secure_pinning_platform_interface
+  secure_pinning_web:
+    path: ../packages/secure_pinning_web
+  secure_pinning_windows:
+    path: ../packages/secure_pinning_windows
 
 flutter:
   uses-material-design: true
